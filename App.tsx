@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, FlatList, Modal, Text, TouchableOpacity, Alert } from 'react-native';
-import Header from '../app5/src/components/Header'; // Assuming the file is in src/screens/ or equivalent
-import MemberItem from '../app5/src/components/MemberItem'; // Same as above
-import AddMemberModal from '../app5/src/components/AddMemberModal'; // Same as above
-import EditMemberModal from '../app5/src/components/EditMemberModal'; // Same as above
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Path remains unchanged
-import { Member } from '../app5/src/types/types'; // Adjusted path to reflect new location
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Header from '../app5/src/components/Header'; // Ajuste conforme o caminho correto
+import MemberItem from '../app5/src/components/MemberItem'; // Ajuste conforme o caminho correto
+import AddMemberModal from '../app5/src/components/AddMemberModal'; // Ajuste conforme o caminho correto
+import EditMemberModal from '../app5/src/components/EditMemberModal'; // Ajuste conforme o caminho correto
+import AsyncStorage from '@react-native-async-storage/async-storage'; // O caminho permanece o mesmo
+import { Member } from '../app5/src/types/types'; // Ajuste conforme o caminho correto
 
 const initialMembers: Member[] = [
   {
@@ -22,7 +23,7 @@ const initialMembers: Member[] = [
     observacao: 'Nenhuma',
     dataUltimaAtualizacao: '2024-09-10',
   },
-  // Add more members as needed
+  // Adicione mais membros conforme necessário
 ];
 
 export default function TabOneScreen() {
@@ -159,7 +160,7 @@ export default function TabOneScreen() {
   );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Header
         searchText={searchText}
         onSearchChange={handleSearch}
@@ -210,7 +211,7 @@ export default function TabOneScreen() {
           </View>
         </View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 }
 

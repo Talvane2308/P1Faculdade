@@ -12,7 +12,7 @@ const initialMembers: Member[] = [
   {
     id: '0',
     name: 'Exemplo',
-    dataNascimento: '01-01-1990',
+    dataNascimento: '01011990',
     telefone: '12345678910',
     contatoEmergencia: '12345678910',
     endereco: 'Endereço',
@@ -73,7 +73,7 @@ export default function TabOneScreen() {
     if (text.trim() === '') {
       loadMembersFromFile();
     } else {
-      const filtered = filteredMembers.filter(member =>
+      const filtered = initialMembers.filter(member =>
         member.name.toLowerCase().includes(text.toLowerCase())
       );
       setFilteredMembers(filtered);
@@ -108,6 +108,11 @@ export default function TabOneScreen() {
   };
 
   const handleDeleteSelectedMembers = async () => {
+    if (selectedMembers.size === 0) {
+      Alert.alert('Nenhum Membro Selecionado', 'Por favor, selecione pelo menos um membro para excluir.');
+      return;
+    }
+
     Alert.alert(
       'Excluir Membros',
       'Você tem certeza de que deseja excluir os membros selecionados?',
@@ -127,7 +132,6 @@ export default function TabOneScreen() {
   };
 
   const handleLogout = () => {
-    // Lógica para sair do aplicativo
     Alert.alert('Sair', 'Você realmente deseja sair do aplicativo?', [
       { text: 'Cancelar', style: 'cancel' },
       { text: 'Sair', onPress: () => BackHandler.exitApp() },

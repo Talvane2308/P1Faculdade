@@ -87,7 +87,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({ visible, onClose, onAdd
                 <Text style={styles.label}>Nome</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Nome"
+                  placeholder="João Silva"
                   value={name}
                   onChangeText={setName}
                 />
@@ -96,7 +96,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({ visible, onClose, onAdd
                 <Text style={styles.label}>Data de Nascimento</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Data de Nascimento"
+                  placeholder="01-01-1990"
                   value={formatDate(dataNascimento)}
                   onChangeText={setDataNascimento}
                 />
@@ -105,7 +105,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({ visible, onClose, onAdd
                 <Text style={styles.label}>Telefone</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Telefone"
+                  placeholder="(01) 23456-7891"
                   value={telefone}
                   onChangeText={setTelefone}
                   // Formata o telefone para exibição
@@ -116,7 +116,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({ visible, onClose, onAdd
                 <Text style={styles.label}>Contato de Emergência</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Contato de Emergência"
+                  placeholder="(01) 23456-7891"
                   value={contatoEmergencia}
                   onChangeText={setContatoEmergencia}
                   // Formata o contato de emergência para exibição
@@ -127,7 +127,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({ visible, onClose, onAdd
                 <Text style={styles.label}>Endereço</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Endereço"
+                  placeholder="Rua das Flores, 123, Centro, São Paulo-SP, 01000-000"
                   value={endereco}
                   onChangeText={setEndereco}
                 />
@@ -136,7 +136,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({ visible, onClose, onAdd
                 <Text style={styles.label}>Alergias</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Alergias"
+                  placeholder="Soja, Diclofenaco"
                   value={alergias}
                   onChangeText={setAlergias}
                 />
@@ -145,7 +145,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({ visible, onClose, onAdd
                 <Text style={styles.label}>Tipo Sanguíneo</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Tipo Sanguíneo"
+                  placeholder="O+"
                   value={tipoSanguineo}
                   onChangeText={setTipoSanguineo}
                 />
@@ -154,7 +154,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({ visible, onClose, onAdd
                 <Text style={styles.label}>Condição Médica</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Condição Médica"
+                  placeholder="Rinite alérgica, Hipertensão"
                   value={condicaoMedica}
                   onChangeText={setCondicaoMedica}
                 />
@@ -163,7 +163,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({ visible, onClose, onAdd
                 <Text style={styles.label}>Medicação</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Medicação"
+                  placeholder="Atensina 100mg"
                   value={medicacao}
                   onChangeText={setMedicacao}
                 />
@@ -172,7 +172,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({ visible, onClose, onAdd
                 <Text style={styles.label}>Observação</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Observação"
+                  placeholder="Sensibilidade a luz."
                   value={observacao}
                   onChangeText={setObservacao}
                 />

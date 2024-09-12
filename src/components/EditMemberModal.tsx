@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, TextInput, StyleSheet, View, ScrollView, Text, TouchableOpacity } from 'react-native';
-import { Member } from '../types/types'; // Certifique-se de que a interface está correta
+import { Member } from '../types/types';
 
 interface EditMemberModalProps {
   visible: boolean;
@@ -27,7 +27,7 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({ visible, member, onCl
       setName(member.name);
       setDataNascimento(formatDate(member.dataNascimento, false));
       setTelefone(formatPhoneNumber(member.telefone));
-      setContatoEmergencia(formatPhoneNumber(member.contatoEmergencia)); // Assumindo que a formatação é a mesma
+      setContatoEmergencia(formatPhoneNumber(member.contatoEmergencia)); 
       setEndereco(member.endereco);
       setAlergias(member.alergias);
       setTipoSanguineo(member.tipoSanguineo);
@@ -70,7 +70,7 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({ visible, member, onCl
       name: name.trim() || '*',
       dataNascimento: dataNascimento.replace(/\//g, '') || '*', // Remove a formatação da data para salvar
       telefone: telefone.replace(/\D/g, '') || '(00) 00000-0000', // Valor padrão se estiver vazio
-      contatoEmergencia: contatoEmergencia.replace(/\D/g, '') || '(00) 00000-0000', // Valor padrão se estiver vazio
+      contatoEmergencia: contatoEmergencia.replace(/\D/g, '') || '(00) 00000-0000',
       endereco: endereco.trim() || '*',
       alergias: alergias.trim() || '*',
       tipoSanguineo: tipoSanguineo.trim() || '*',
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)', // Fundo opaco
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   modalContent: {
     width: '100%',
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    elevation: 5, // Sombra para o modal
+    elevation: 5,
   },
   scrollViewContent: {
     flexGrow: 1,
@@ -239,10 +239,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
-    fontSize: 16, // Tamanho da fonte dos campos de texto
+    fontSize: 16,
   },
   label: {
-    fontSize: 18, // Tamanho da fonte dos rótulos
+    fontSize: 18,
     marginBottom: 5,
     color: '#333',
   },
@@ -275,8 +275,8 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 16, // Tamanho da fonte dos botões
-    textAlign: 'center', // Centraliza o texto
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
 

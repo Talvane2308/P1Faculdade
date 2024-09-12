@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
-    backgroundColor: '#fff', // Fundo branco para o cabeçalho
+    backgroundColor: '#fff', 
   },
   iconButton: {
     padding: 10,

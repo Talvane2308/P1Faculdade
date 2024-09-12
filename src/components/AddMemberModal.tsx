@@ -53,7 +53,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({ visible, onClose, onAdd
       name: name.trim() || '*',
       dataNascimento: dataNascimento.trim() || '*', // Remove a formatação da data para salvar
       telefone: telefone.trim() || '(00) 00000-0000', // Valor padrão se estiver vazio
-      contatoEmergencia: contatoEmergencia.trim() || '(00) 00000-0000', // Valor padrão se estiver vazio
+      contatoEmergencia: contatoEmergencia.trim() || '(00) 00000-0000',
       endereco: endereco.trim() || '*',
       alergias: alergias.trim() || '*',
       tipoSanguineo: tipoSanguineo.trim() || '*',
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)', // Fundo opaco
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   modalContent: {
     width: '100%',
@@ -228,16 +228,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   input: {
-    height: 50, // Aumenta a altura dos campos de entrada
+    height: 50,
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 5,
-    fontSize: 16, // Aumenta o tamanho da fonte
+    fontSize: 16,
   },
   label: {
-    fontSize: 18, // Aumenta o tamanho da fonte dos rótulos
+    fontSize: 18,
     marginBottom: 5,
     color: '#333',
   },
@@ -251,8 +251,8 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     backgroundColor: '#007bff', // Cor azul para o botão de registro
-    paddingVertical: 10, // Reduz a altura do botão
-    paddingHorizontal: 20, // Reduz o padding horizontal do botão
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: 5,
     flex: 1,
     marginHorizontal: 5,
@@ -260,8 +260,8 @@ const styles = StyleSheet.create({
   },
   cancelButton: {
     backgroundColor: '#6c757d', // Cor cinza para o botão cancelar
-    paddingVertical: 10, // Reduz a altura do botão
-    paddingHorizontal: 20, // Reduz o padding horizontal do botão
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: 5,
     flex: 1,
     marginHorizontal: 5,
@@ -270,8 +270,8 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 16, // Ajusta o tamanho da fonte dos botões
-    textAlign: 'center', // Centraliza o texto
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
 

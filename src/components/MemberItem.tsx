@@ -6,7 +6,7 @@ interface MemberItemProps {
   name: string;
   isSelected: boolean;
   onPress: (id: string) => void;
-  onLongPress: () => void; // Função para toque longo (edição)
+  onLongPress: () => void;
 }
 
 const MemberItem: React.FC<MemberItemProps> = ({ id, name, isSelected, onPress, onLongPress }) => {
@@ -14,7 +14,7 @@ const MemberItem: React.FC<MemberItemProps> = ({ id, name, isSelected, onPress, 
     <TouchableOpacity
       style={[styles.memberItem, isSelected && styles.selectedItem]}
       onPress={() => onPress(id)}
-      onLongPress={onLongPress} // Adiciona toque longo para edição
+      onLongPress={onLongPress}
       activeOpacity={0.7}
       accessibilityLabel={`Membro ${name}`}
       accessibilityHint="Toque para selecionar ou desmarcar este membro, ou mantenha pressionado para editar"

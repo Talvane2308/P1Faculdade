@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, FlatList, Modal, Text, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, FlatList, Modal, Text, TouchableOpacity, Alert, BackHandler } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Header from '../app5/src/components/Header'; // Ajuste conforme o caminho correto
-import MemberItem from '../app5/src/components/MemberItem'; // Ajuste conforme o caminho correto
-import AddMemberModal from '../app5/src/components/AddMemberModal'; // Ajuste conforme o caminho correto
-import EditMemberModal from '../app5/src/components/EditMemberModal'; // Ajuste conforme o caminho correto
-import AsyncStorage from '@react-native-async-storage/async-storage'; // O caminho permanece o mesmo
-import { Member } from '../app5/src/types/types'; // Ajuste conforme o caminho correto
+import Header from '../app5/src/components/Header';
+import MemberItem from '../app5/src/components/MemberItem';
+import AddMemberModal from '../app5/src/components/AddMemberModal';
+import EditMemberModal from '../app5/src/components/EditMemberModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Member } from '../app5/src/types/types';
 
 const initialMembers: Member[] = [
   {
     id: '0',
-    name: 'Abcdef',
-    dataNascimento: '2000-01-01',
-    telefone: '123456789',
-    contatoEmergencia: '987654321',
-    endereco: 'Endereço 1',
+    name: 'Exemplo',
+    dataNascimento: '01-01-1990',
+    telefone: '12345678910',
+    contatoEmergencia: '12345678910',
+    endereco: 'Endereço',
     alergias: 'Nenhuma',
     tipoSanguineo: 'O+',
     condicaoMedica: 'Nenhuma',
@@ -126,6 +126,14 @@ export default function TabOneScreen() {
     );
   };
 
+  const handleLogout = () => {
+    // Lógica para sair do aplicativo
+    Alert.alert('Sair', 'Você realmente deseja sair do aplicativo?', [
+      { text: 'Cancelar', style: 'cancel' },
+      { text: 'Sair', onPress: () => BackHandler.exitApp() },
+    ]);
+  };
+
   const saveMembersToFile = async (members: Member[]) => {
     try {
       const jsonMembers = JSON.stringify(members);
@@ -207,6 +215,9 @@ export default function TabOneScreen() {
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => setOptionsModalVisible(false)}>
               <Text style={styles.buttonText}>Retornar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={handleLogout}>
+              <Text style={styles.buttonText}>Sair do Aplicativo</Text>
             </TouchableOpacity>
           </View>
         </View>

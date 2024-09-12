@@ -28,6 +28,7 @@ const initialMembers: Member[] = [
 
 export default function TabOneScreen() {
   const [searchText, setSearchText] = useState<string>('');
+  const [members, setMembers] = useState<Member[]>(initialMembers); // Renomeado para evitar confusão
   const [filteredMembers, setFilteredMembers] = useState<Member[]>(initialMembers);
   const [selectedMembers, setSelectedMembers] = useState<Set<string>>(new Set());
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -39,16 +40,20 @@ export default function TabOneScreen() {
     loadMembersFromFile();
   }, []);
 
+  useEffect(() => {
+    filterMembers(searchText);
+  }, [members, searchText]); // Atualiza a lista filtrada quando membros ou texto de busca mudam
+
   const handleAddMember = () => {
     setModalVisible(true);
   };
 
   const handleAddMemberConfirm = (newMember: Omit<Member, 'id'>) => {
-    const memberId = (filteredMembers.length + 1).toString();
+    const memberId = (members.length + 1).toString();
     const memberWithId = { ...newMember, id: memberId };
 
-    const updatedMembers = [...filteredMembers, memberWithId];
-    setFilteredMembers(updatedMembers);
+    const updatedMembers = [...members, memberWithId];
+    setMembers(updatedMembers);
     setSelectedMembers(new Set());
     saveMembersToFile(updatedMembers);
     setModalVisible(false);
@@ -60,29 +65,32 @@ export default function TabOneScreen() {
   };
 
   const handleUpdateMember = (updatedMember: Member) => {
-    const updatedMembers = filteredMembers.map(member =>
+    const updatedMembers = members.map(member =>
       member.id === updatedMember.id ? updatedMember : member
     );
-    setFilteredMembers(updatedMembers);
+    setMembers(updatedMembers);
     saveMembersToFile(updatedMembers);
     setEditModalVisible(false);
   };
 
-  const handleSearch = (text: string) => {
-    setSearchText(text);
+  const filterMembers = (text: string) => {
     if (text.trim() === '') {
-      loadMembersFromFile();
+      setFilteredMembers(members);
     } else {
-      const filtered = initialMembers.filter(member =>
+      const filtered = members.filter(member =>
         member.name.toLowerCase().includes(text.toLowerCase())
       );
       setFilteredMembers(filtered);
     }
   };
 
+  const handleSearch = (text: string) => {
+    setSearchText(text);
+  };
+
   const handleClearSearch = () => {
     setSearchText('');
-    loadMembersFromFile();
+    setFilteredMembers(members);
   };
 
   const handleSelectAll = () => {
@@ -121,8 +129,8 @@ export default function TabOneScreen() {
         {
           text: 'Excluir',
           onPress: () => {
-            const updatedMembers = filteredMembers.filter(member => !selectedMembers.has(member.id));
-            setFilteredMembers(updatedMembers);
+            const updatedMembers = members.filter(member => !selectedMembers.has(member.id));
+            setMembers(updatedMembers);
             setSelectedMembers(new Set());
             saveMembersToFile(updatedMembers);
           },
@@ -152,9 +160,9 @@ export default function TabOneScreen() {
       const jsonMembers = await AsyncStorage.getItem('members');
       if (jsonMembers) {
         const members = JSON.parse(jsonMembers) as Member[];
-        setFilteredMembers(members);
+        setMembers(members);
       } else {
-        setFilteredMembers(initialMembers);
+        setMembers(initialMembers);
       }
     } catch (error) {
       console.error('Failed to load members from file:', error);

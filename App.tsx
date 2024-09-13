@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, FlatList, Modal, Text, TouchableOpacity, Alert, BackHandler } from 'react-native';
+import { StyleSheet, View, FlatList, Alert, BackHandler } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../app5/src/components/Header';
 import MemberItem from '../app5/src/components/MemberItem';
 import AddMemberModal from '../app5/src/components/AddMemberModal';
 import EditMemberModal from '../app5/src/components/EditMemberModal';
+import OptionsModal from '../app5/src/components/OptionsModal';
+import ActionModal from '../app5/src/components/ActionModal';
+import ViewMemberModal from '../app5/src/components/ViewMemberModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Member } from '../app5/src/types/types';
 
@@ -27,14 +30,16 @@ const initialMembers: Member[] = [
 ];
 
 export default function TabOneScreen() {
-  const [searchText, setSearchText] = useState<string>('');
-  const [members, setMembers] = useState<Member[]>(initialMembers); // Renomeado para evitar confusão
-  const [filteredMembers, setFilteredMembers] = useState<Member[]>(initialMembers);
+  const [searchText, setSearchText] = useState('');
+  const [members, setMembers] = useState<Member[]>([]);
+  const [filteredMembers, setFilteredMembers] = useState<Member[]>([]);
   const [selectedMembers, setSelectedMembers] = useState<Set<string>>(new Set());
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [editModalVisible, setEditModalVisible] = useState<boolean>(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [viewModalVisible, setViewModalVisible] = useState(false); // Estado para modal de visualização
   const [currentMember, setCurrentMember] = useState<Member | null>(null);
-  const [optionsModalVisible, setOptionsModalVisible] = useState<boolean>(false);
+  const [optionsModalVisible, setOptionsModalVisible] = useState(false);
+  const [actionModalVisible, setActionModalVisible] = useState(false);
 
   useEffect(() => {
     loadMembersFromFile();
@@ -42,20 +47,14 @@ export default function TabOneScreen() {
 
   useEffect(() => {
     filterMembers(searchText);
-  }, [members, searchText]); // Atualiza a lista filtrada quando membros ou texto de busca mudam
+  }, [members, searchText]);
 
-  const handleAddMember = () => {
-    setModalVisible(true);
-  };
+  const handleAddMember = () => setModalVisible(true);
 
   const handleAddMemberConfirm = (newMember: Omit<Member, 'id'>) => {
-    const memberId = (members.length + 1).toString();
-    const memberWithId = { ...newMember, id: memberId };
-
-    const updatedMembers = [...members, memberWithId];
-    setMembers(updatedMembers);
-    setSelectedMembers(new Set());
-    saveMembersToFile(updatedMembers);
+    const newId = (members.length + 1).toString();
+    const updatedMembers = [...members, { ...newMember, id: newId }];
+    updateMembers(updatedMembers);
     setModalVisible(false);
   };
 
@@ -68,13 +67,24 @@ export default function TabOneScreen() {
     const updatedMembers = members.map(member =>
       member.id === updatedMember.id ? updatedMember : member
     );
-    setMembers(updatedMembers);
-    saveMembersToFile(updatedMembers);
+    updateMembers(updatedMembers);
     setEditModalVisible(false);
   };
 
+  const handleViewMember = (member: Member) => {
+    setCurrentMember(member);
+    setViewModalVisible(true);
+  };
+
+  const handleViewMemberEdit = () => {
+    setViewModalVisible(false);
+    if (currentMember) {
+      handleEditMember(currentMember);
+    }
+  };
+
   const filterMembers = (text: string) => {
-    if (text.trim() === '') {
+    if (!text.trim()) {
       setFilteredMembers(members);
     } else {
       const filtered = members.filter(member =>
@@ -84,60 +94,33 @@ export default function TabOneScreen() {
     }
   };
 
-  const handleSearch = (text: string) => {
-    setSearchText(text);
+  const updateMembers = (updatedMembers: Member[]) => {
+    setMembers(updatedMembers);
+    saveMembersToFile(updatedMembers);
   };
 
-  const handleClearSearch = () => {
-    setSearchText('');
-    setFilteredMembers(members);
-  };
+  const handleSearch = (text: string) => setSearchText(text);
+
+  const handleClearSearch = () => setSearchText('');
 
   const handleSelectAll = () => {
     if (selectedMembers.size === filteredMembers.length) {
       setSelectedMembers(new Set());
     } else {
-      setSelectedMembers(new Set(filteredMembers.map(member => member.id)));
+      const newSelection = new Set(filteredMembers.map(member => member.id));
+      setSelectedMembers(newSelection);
     }
   };
 
   const handleItemPress = (id: string) => {
-    const updatedSelection = new Set(selectedMembers);
-    if (selectedMembers.has(id)) {
-      updatedSelection.delete(id);
-    } else {
-      updatedSelection.add(id);
-    }
-    setSelectedMembers(updatedSelection);
+    setSelectedMembers(prevSelected => {
+      const updatedSelection = new Set(prevSelected);
+      updatedSelection.has(id) ? updatedSelection.delete(id) : updatedSelection.add(id);
+      return updatedSelection;
+    });
   };
 
-  const handleOptions = () => {
-    setOptionsModalVisible(true);
-  };
-
-  const handleDeleteSelectedMembers = async () => {
-    if (selectedMembers.size === 0) {
-      Alert.alert('Nenhum Membro Selecionado', 'Por favor, selecione pelo menos um membro para excluir.');
-      return;
-    }
-
-    Alert.alert(
-      'Excluir Membros',
-      'Você tem certeza de que deseja excluir os membros selecionados?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        {
-          text: 'Excluir',
-          onPress: () => {
-            const updatedMembers = members.filter(member => !selectedMembers.has(member.id));
-            setMembers(updatedMembers);
-            setSelectedMembers(new Set());
-            saveMembersToFile(updatedMembers);
-          },
-        },
-      ]
-    );
-  };
+  const handleOptions = () => setOptionsModalVisible(true);
 
   const handleLogout = () => {
     Alert.alert('Sair', 'Você realmente deseja sair do aplicativo?', [
@@ -148,24 +131,23 @@ export default function TabOneScreen() {
 
   const saveMembersToFile = async (members: Member[]) => {
     try {
-      const jsonMembers = JSON.stringify(members);
-      await AsyncStorage.setItem('members', jsonMembers);
+      const json = JSON.stringify(members);
+      await AsyncStorage.setItem('members', json);
     } catch (error) {
-      console.error('Failed to save members to file:', error);
+      console.error('Falha ao salvar membros:', error);
     }
   };
 
   const loadMembersFromFile = async () => {
     try {
-      const jsonMembers = await AsyncStorage.getItem('members');
-      if (jsonMembers) {
-        const members = JSON.parse(jsonMembers) as Member[];
-        setMembers(members);
+      const storedMembers = await AsyncStorage.getItem('members');
+      if (storedMembers) {
+        setMembers(JSON.parse(storedMembers));
       } else {
         setMembers(initialMembers);
       }
     } catch (error) {
-      console.error('Failed to load members from file:', error);
+      console.error('Falha ao carregar membros:', error);
     }
   };
 
@@ -174,8 +156,8 @@ export default function TabOneScreen() {
       id={item.id}
       name={item.name}
       isSelected={selectedMembers.has(item.id)}
-      onPress={handleItemPress}
-      onLongPress={() => handleEditMember(item)} // Long press to edit
+      onPress={() => handleItemPress(item.id)}
+      onLongPress={() => handleViewMember(item)} // Atualizado para abrir o modal de visualização
     />
   );
 
@@ -208,32 +190,28 @@ export default function TabOneScreen() {
           onUpdate={handleUpdateMember}
         />
       )}
-      <Modal
-        transparent={true}
+      {currentMember && (
+        <ViewMemberModal
+          visible={viewModalVisible}
+          member={currentMember}
+          onClose={() => setViewModalVisible(false)}
+          onEdit={handleViewMemberEdit} // Adicionada a função para editar o membro
+        />
+      )}
+      <OptionsModal
         visible={optionsModalVisible}
-        onRequestClose={() => setOptionsModalVisible(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Escolha uma opção</Text>
-            <TouchableOpacity style={styles.button} onPress={handleDeleteSelectedMembers}>
-              <Text style={styles.buttonText}>Excluir Selecionados</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => console.log('Import')}>
-              <Text style={styles.buttonText}>Importar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => console.log('Export')}>
-              <Text style={styles.buttonText}>Exportar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => setOptionsModalVisible(false)}>
-              <Text style={styles.buttonText}>Retornar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={handleLogout}>
-              <Text style={styles.buttonText}>Sair do Aplicativo</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+        onClose={() => setOptionsModalVisible(false)}
+        members={members}
+        setMembers={setMembers}
+        selectedMembers={selectedMembers}
+        setSelectedMembers={setSelectedMembers}
+      />
+      <ActionModal
+        visible={actionModalVisible}
+        onClose={() => setActionModalVisible(false)}
+        onAdd={handleAddMember}
+        onEdit={() => currentMember && handleEditMember(currentMember)}
+      />
     </SafeAreaView>
   );
 }
@@ -246,33 +224,5 @@ const styles = StyleSheet.create({
   memberList: {
     flex: 1,
     padding: 10,
-  },
-  modalOverlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    backgroundColor: '#fff',
-    padding: 20,
-    borderRadius: 10,
-    width: '80%',
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  button: {
-    padding: 10,
-    backgroundColor: '#007bff',
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    textAlign: 'center',
   },
 });

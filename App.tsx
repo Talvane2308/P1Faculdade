@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, FlatList, Alert, BackHandler } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Header from '../app5/src/components/Header';
-import MemberItem from '../app5/src/components/MemberItem';
-import AddMemberModal from '../app5/src/components/AddMemberModal';
-import EditMemberModal from '../app5/src/components/EditMemberModal';
-import OptionsModal from '../app5/src/components/OptionsModal';
-import ActionModal from '../app5/src/components/ActionModal';
-import ViewMemberModal from '../app5/src/components/ViewMemberModal';
+import Header from './src/components/Header';
+import MemberItem from './src/components/MemberItem';
+import AddMemberModal from './src/components/AddMemberModal';
+import EditMemberModal from './src/components/EditMemberModal';
+import OptionsModal from './src/components/OptionsModal';
+import ActionModal from './src/components/ActionModal';
+import ViewMemberModal from './src/components/ViewMemberModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Member } from '../app5/src/types/types';
+import { Member } from './src/types/types';
 
 const initialMembers: Member[] = [
   {

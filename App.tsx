@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, FlatList, Alert, BackHandler } from 'react-native';
+import { StyleSheet, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from './src/components/Header';
 import MemberItem from './src/components/MemberItem';
@@ -121,13 +121,6 @@ export default function TabOneScreen() {
   };
 
   const handleOptions = () => setOptionsModalVisible(true);
-
-  const handleLogout = () => {
-    Alert.alert('Sair', 'Você realmente deseja sair do aplicativo?', [
-      { text: 'Cancelar', style: 'cancel' },
-      { text: 'Sair', onPress: () => BackHandler.exitApp() },
-    ]);
-  };
 
   const saveMembersToFile = async (members: Member[]) => {
     try {

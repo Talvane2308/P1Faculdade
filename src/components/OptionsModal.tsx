@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, View, Text, TouchableOpacity, StyleSheet, Alert, BackHandler } from 'react-native';
+import { Modal, View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Member } from '../types/types';
 
@@ -32,17 +32,11 @@ const OptionsModal: React.FC<OptionsModalProps> = ({ visible, onClose, members, 
             setMembers(updatedMembers);
             setSelectedMembers(new Set());
             saveMembersToFile(updatedMembers);
+            onClose(); // Fechar o modal após a exclusão
           },
         },
       ]
     );
-  };
-
-  const handleLogout = () => {
-    Alert.alert('Sair', 'Você realmente deseja sair do aplicativo?', [
-      { text: 'Cancelar', style: 'cancel' },
-      { text: 'Sair', onPress: () => BackHandler.exitApp() },
-    ]);
   };
 
   const saveMembersToFile = async (members: Member[]) => {
@@ -52,16 +46,6 @@ const OptionsModal: React.FC<OptionsModalProps> = ({ visible, onClose, members, 
     } catch (error) {
       console.error('Failed to save members to file:', error);
     }
-  };
-
-  const handleImport = () => {
-    // Lógica de importação
-    console.log('Importar');
-  };
-
-  const handleExport = () => {
-    // Lógica de exportação
-    console.log('Exportar');
   };
 
   return (
@@ -76,17 +60,8 @@ const OptionsModal: React.FC<OptionsModalProps> = ({ visible, onClose, members, 
           <TouchableOpacity style={styles.button} onPress={handleDeleteSelected}>
             <Text style={styles.buttonText}>Excluir Selecionados</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleImport}>
-            <Text style={styles.buttonText}>Importar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleExport}>
-            <Text style={styles.buttonText}>Exportar</Text>
-          </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={onClose}>
             <Text style={styles.buttonText}>Retornar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleLogout}>
-            <Text style={styles.buttonText}>Sair do Aplicativo</Text>
           </TouchableOpacity>
         </View>
       </View>

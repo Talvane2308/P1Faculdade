@@ -16,6 +16,18 @@ const formatDate = (date: string) => {
   return `${day}/${month}/${year}`;
 };
 
+const formatPhoneNumber = (phoneNumber: string) => {
+  if (!phoneNumber) return '';
+  // Remove caracteres não numéricos
+  const cleaned = phoneNumber.replace(/\D/g, '');
+  // Aplica a formatação
+  const match = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/);
+  if (match) {
+    return `(${match[1]}) ${match[2]}-${match[3]}`;
+  }
+  return phoneNumber;
+};
+
 const ViewMemberModal: React.FC<ViewMemberModalProps> = ({ visible, member, onClose, onEdit }) => {
   if (!member) return null;
 
@@ -34,9 +46,9 @@ const ViewMemberModal: React.FC<ViewMemberModalProps> = ({ visible, member, onCl
             <Text style={styles.label}>Data de Nascimento:</Text>
             <Text style={styles.value}>{formatDate(member.dataNascimento)}</Text>
             <Text style={styles.label}>Telefone:</Text>
-            <Text style={styles.value}>{member.telefone}</Text>
+            <Text style={styles.value}>{formatPhoneNumber(member.telefone)}</Text>
             <Text style={styles.label}>Contato de Emergência:</Text>
-            <Text style={styles.value}>{member.contatoEmergencia}</Text>
+            <Text style={styles.value}>{formatPhoneNumber(member.contatoEmergencia)}</Text>
             <Text style={styles.label}>Endereço:</Text>
             <Text style={styles.value}>{member.endereco}</Text>
             <Text style={styles.label}>Alergias:</Text>
@@ -71,7 +83,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 1)',
+    backgroundColor: 'rgba(255, 255, 255, 0.8)', // Changed to 0.8 for better visibility
   },
   modalContainer: {
     width: '90%',

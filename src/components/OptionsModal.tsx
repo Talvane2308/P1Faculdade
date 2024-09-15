@@ -32,7 +32,7 @@ const OptionsModal: React.FC<OptionsModalProps> = ({ visible, onClose, members, 
             setMembers(updatedMembers);
             setSelectedMembers(new Set());
             saveMembersToFile(updatedMembers);
-            onClose(); // Fechar o modal após a exclusão
+            onClose();
           },
         },
       ]

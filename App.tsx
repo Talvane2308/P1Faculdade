@@ -36,7 +36,7 @@ export default function TabOneScreen() {
   const [selectedMembers, setSelectedMembers] = useState<Set<string>>(new Set());
   const [modalVisible, setModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
-  const [viewModalVisible, setViewModalVisible] = useState(false); // Estado para modal de visualização
+  const [viewModalVisible, setViewModalVisible] = useState(false);
   const [currentMember, setCurrentMember] = useState<Member | null>(null);
   const [optionsModalVisible, setOptionsModalVisible] = useState(false);
   const [actionModalVisible, setActionModalVisible] = useState(false);
@@ -150,7 +150,7 @@ export default function TabOneScreen() {
       name={item.name}
       isSelected={selectedMembers.has(item.id)}
       onPress={() => handleItemPress(item.id)}
-      onLongPress={() => handleViewMember(item)} // Atualizado para abrir o modal de visualização
+      onLongPress={() => handleViewMember(item)}
     />
   );
 
@@ -188,7 +188,7 @@ export default function TabOneScreen() {
           visible={viewModalVisible}
           member={currentMember}
           onClose={() => setViewModalVisible(false)}
-          onEdit={handleViewMemberEdit} // Adicionada a função para editar o membro
+          onEdit={handleViewMemberEdit} 
         />
       )}
       <OptionsModal
